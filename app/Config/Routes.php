@@ -20,14 +20,14 @@ $routes->post('users/update', 'Users::update');
 $routes->delete('users/delete/(:num)', 'Users::delete/$1');
 $routes->post('users/fetchRecords', 'Users::fetchRecords');
 
-// Person routes
-$routes->get('/person', 'Person::index');
-$routes->post('person/save', 'Person::save');
-$routes->get('person/edit/(:segment)', 'Person::edit/$1');
-$routes->post('person/update', 'Person::update');
-$routes->delete('person/delete/(:num)', 'Person::delete/$1');
-$routes->post('person/fetchRecords', 'Person::fetchRecords');
-
+// ========== PRODUCTS ROUTES ==========
+$routes->group('products', function($routes) {
+    $routes->get('/', 'Products::index');
+    $routes->post('/', 'Products::datatables');
+    $routes->post('save', 'Products::save');
+    $routes->post('delete', 'Products::delete');
+    $routes->get('getProduct/(:num)', 'Products::getProduct/$1');
+});
 // Profiling routes
 $routes->get('/profiling', 'Profiling::index');
 $routes->post('profiling/save', 'Profiling::save');
