@@ -10,63 +10,55 @@ function showToast(type, message) {
     }
 }
 
-const productUrl = baseUrl + '/products';
+const categoryUrl = baseUrl + '/categories';
+
+let categoryTable;
 
 
 // =========================
-// ADD / UPDATE PRODUCT
+// ADD / UPDATE CATEGORY
 // =========================
-$('#addForm, #editForm').on('submit', function (e) {
+$('#categoryForm').on('submit', function (e) {
     e.preventDefault();
 
     $.ajax({
-        url: productUrl + '/save',
+        url: categoryUrl + '/save',
         method: 'POST',
         data: $(this).serialize(),
         dataType: 'json',
         success: function (res) {
             if (res.status) {
-                $('#addModal, #editModal').modal('hide');
-                $('#addForm')[0].reset();
-                $('#editForm')[0].reset();
+                $('#categoryModal').modal('hide');
+                $('#categoryForm')[0].reset();
 
                 showToast('success', res.message || 'Saved successfully');
 
-                table.ajax.reload(); // DataTable reload (NO full refresh)
+                categoryTable.ajax.reload();
             } else {
-                showToast('error', res.message || 'Operation failed');
+                showToast('error', res.message || 'Save failed');
             }
-        },
-        error: function () {
-            showToast('error', 'Server error occurred');
         }
     });
 });
 
 
 // =========================
-// EDIT PRODUCT
+// EDIT CATEGORY
 // =========================
-$(document).on('click', '.edit-product', function () {
+$(document).on('click', '.edit-category', function () {
     const id = $(this).data('id');
 
     $.ajax({
-        url: productUrl + '/get/' + id,
+        url: categoryUrl + '/get/' + id,
         method: 'GET',
         dataType: 'json',
         success: function (res) {
             if (res.data) {
-                $('#editId').val(res.data.id);
-                $('#editName').val(res.data.name);
-                $('#editCategory').val(res.data.category_id);
-                $('#editSupplier').val(res.data.supplier_id);
-                $('#editPrice').val(res.data.price);
-                $('#editQuantity').val(res.data.quantity);
-                $('#editDescription').val(res.data.description);
+                $('#categoryId').val(res.data.id);
+                $('#categoryName').val(res.data.name);
+                $('#categoryDescription').val(res.data.description);
 
-                $('#editModal').modal('show');
-            } else {
-                showToast('error', 'Data not found');
+                $('#categoryModal').modal('show');
             }
         }
     });
@@ -74,22 +66,22 @@ $(document).on('click', '.edit-product', function () {
 
 
 // =========================
-// DELETE PRODUCT
+// DELETE CATEGORY
 // =========================
-$(document).on('click', '.delete-product', function () {
+$(document).on('click', '.delete-category', function () {
     const id = $(this).data('id');
 
-    if (!confirm('Delete this product?')) return;
+    if (!confirm('Delete this category?')) return;
 
     $.ajax({
-        url: productUrl + '/delete',
+        url: categoryUrl + '/delete',
         method: 'POST',
         data: { id: id },
         dataType: 'json',
         success: function (res) {
             if (res.status) {
                 showToast('success', res.message || 'Deleted');
-                table.ajax.reload();
+                categoryTable.ajax.reload();
             } else {
                 showToast('error', res.message || 'Delete failed');
             }
@@ -101,33 +93,29 @@ $(document).on('click', '.delete-product', function () {
 // =========================
 // DATATABLE
 // =========================
-let table;
-
 $(document).ready(function () {
-    table = $('#productsTable').DataTable({
+
+    categoryTable = $('#categoriesTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: productUrl + '/datatables',
+            url: categoryUrl + '/datatables',
             type: 'POST'
         },
         columns: [
             { data: null },
             { data: 'name' },
-            { data: 'sku' },
-            { data: 'category_name' },
-            { data: 'supplier_name' },
-            { data: 'quantity' },
-            { data: 'price' },
+            { data: 'description' },
+            { data: 'total_products' },
             {
                 data: null,
                 orderable: false,
                 render: function (data, type, row) {
                     return `
-                        <button class="btn btn-sm btn-warning edit-product" data-id="${row.id}">
+                        <button class="btn btn-sm btn-warning edit-category" data-id="${row.id}">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger delete-product" data-id="${row.id}">
+                        <button class="btn btn-sm btn-danger delete-category" data-id="${row.id}">
                             <i class="fas fa-trash"></i>
                         </button>
                     `;
@@ -141,4 +129,5 @@ $(document).ready(function () {
             }
         }]
     });
+
 });

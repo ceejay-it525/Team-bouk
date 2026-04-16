@@ -10,63 +10,57 @@ function showToast(type, message) {
     }
 }
 
-const productUrl = baseUrl + '/products';
+const supplierUrl = baseUrl + '/suppliers';
+
+let supplierTable;
 
 
 // =========================
-// ADD / UPDATE PRODUCT
+// ADD / UPDATE SUPPLIER
 // =========================
-$('#addForm, #editForm').on('submit', function (e) {
+$('#supplierForm').on('submit', function (e) {
     e.preventDefault();
 
     $.ajax({
-        url: productUrl + '/save',
+        url: supplierUrl + '/save',
         method: 'POST',
         data: $(this).serialize(),
         dataType: 'json',
         success: function (res) {
             if (res.status) {
-                $('#addModal, #editModal').modal('hide');
-                $('#addForm')[0].reset();
-                $('#editForm')[0].reset();
+                $('#supplierModal').modal('hide');
+                $('#supplierForm')[0].reset();
 
                 showToast('success', res.message || 'Saved successfully');
 
-                table.ajax.reload(); // DataTable reload (NO full refresh)
+                supplierTable.ajax.reload();
             } else {
-                showToast('error', res.message || 'Operation failed');
+                showToast('error', res.message || 'Save failed');
             }
-        },
-        error: function () {
-            showToast('error', 'Server error occurred');
         }
     });
 });
 
 
 // =========================
-// EDIT PRODUCT
+// EDIT SUPPLIER
 // =========================
-$(document).on('click', '.edit-product', function () {
+$(document).on('click', '.edit-supplier', function () {
     const id = $(this).data('id');
 
     $.ajax({
-        url: productUrl + '/get/' + id,
+        url: supplierUrl + '/get/' + id,
         method: 'GET',
         dataType: 'json',
         success: function (res) {
             if (res.data) {
-                $('#editId').val(res.data.id);
-                $('#editName').val(res.data.name);
-                $('#editCategory').val(res.data.category_id);
-                $('#editSupplier').val(res.data.supplier_id);
-                $('#editPrice').val(res.data.price);
-                $('#editQuantity').val(res.data.quantity);
-                $('#editDescription').val(res.data.description);
+                $('#supplierId').val(res.data.id);
+                $('#supplierName').val(res.data.name);
+                $('#supplierEmail').val(res.data.email);
+                $('#supplierPhone').val(res.data.phone);
+                $('#supplierAddress').val(res.data.address);
 
-                $('#editModal').modal('show');
-            } else {
-                showToast('error', 'Data not found');
+                $('#supplierModal').modal('show');
             }
         }
     });
@@ -74,22 +68,22 @@ $(document).on('click', '.edit-product', function () {
 
 
 // =========================
-// DELETE PRODUCT
+// DELETE SUPPLIER
 // =========================
-$(document).on('click', '.delete-product', function () {
+$(document).on('click', '.delete-supplier', function () {
     const id = $(this).data('id');
 
-    if (!confirm('Delete this product?')) return;
+    if (!confirm('Delete this supplier?')) return;
 
     $.ajax({
-        url: productUrl + '/delete',
+        url: supplierUrl + '/delete',
         method: 'POST',
         data: { id: id },
         dataType: 'json',
         success: function (res) {
             if (res.status) {
                 showToast('success', res.message || 'Deleted');
-                table.ajax.reload();
+                supplierTable.ajax.reload();
             } else {
                 showToast('error', res.message || 'Delete failed');
             }
@@ -101,33 +95,31 @@ $(document).on('click', '.delete-product', function () {
 // =========================
 // DATATABLE
 // =========================
-let table;
-
 $(document).ready(function () {
-    table = $('#productsTable').DataTable({
+
+    supplierTable = $('#suppliersTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: productUrl + '/datatables',
+            url: supplierUrl + '/datatables',
             type: 'POST'
         },
         columns: [
             { data: null },
             { data: 'name' },
-            { data: 'sku' },
-            { data: 'category_name' },
-            { data: 'supplier_name' },
-            { data: 'quantity' },
-            { data: 'price' },
+            { data: 'email' },
+            { data: 'phone' },
+            { data: 'address' },
+            { data: 'total_products' },
             {
                 data: null,
                 orderable: false,
                 render: function (data, type, row) {
                     return `
-                        <button class="btn btn-sm btn-warning edit-product" data-id="${row.id}">
+                        <button class="btn btn-sm btn-warning edit-supplier" data-id="${row.id}">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger delete-product" data-id="${row.id}">
+                        <button class="btn btn-sm btn-danger delete-supplier" data-id="${row.id}">
                             <i class="fas fa-trash"></i>
                         </button>
                     `;
@@ -141,4 +133,5 @@ $(document).ready(function () {
             }
         }]
     });
+
 });

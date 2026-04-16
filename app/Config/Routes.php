@@ -12,37 +12,25 @@ $routes->post('/auth', 'Auth::auth');
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/logout', 'Auth::logout');
 
-// User Acounts routes
-$routes->get('/users', 'Users::index');
-$routes->post('users/save', 'Users::save');
-$routes->get('users/edit/(:segment)', 'Users::edit/$1');
-$routes->post('users/update', 'Users::update');
-$routes->delete('users/delete/(:num)', 'Users::delete/$1');
-$routes->post('users/fetchRecords', 'Users::fetchRecords');
+$routes->get('/', 'Dashboard::index');
 
-// ========== PRODUCTS ROUTES ==========
-$routes->group('products', function($routes) {
-    $routes->get('/', 'Products::index');
-    $routes->post('/', 'Products::datatables');
-    $routes->post('save', 'Products::save');
-    $routes->post('delete', 'Products::delete');
-    $routes->get('getProduct/(:num)', 'Products::getProduct/$1');
-});
-// Profiling routes
-$routes->get('/profiling', 'Profiling::index');
-$routes->post('profiling/save', 'Profiling::save');
-$routes->get('profiling/edit/(:segment)', 'Profiling::edit/$1');
-$routes->post('profiling/update', 'Profiling::update');
-$routes->delete('profiling/delete/(:num)', 'Profiling::delete/$1');
-$routes->post('profiling/fetchRecords', 'Profiling::fetchRecords');
+$routes->get('products', 'Products::index');
+$routes->post('products/save', 'Products::save');
+$routes->post('products/getAll', 'Products::getAll');
 
-// Student routes
-$routes->get('/student', 'Student::index');
-$routes->post('student/save', 'Student::save');
-$routes->get('student/edit/(:segment)', 'Student::edit/$1');
-$routes->post('student/update', 'Student::update');
-$routes->delete('student/delete/(:num)', 'Student::delete/$1');
-$routes->post('student/fetchRecords', 'Student::fetchRecords');
+$routes->get('categories', 'Categories::index');
+$routes->post('categories/save', 'Categories::save');
+$routes->post('categories/getAll', 'Categories::getAll');
 
-// Logs routes for admin
-$routes->get('/log', 'Logs::log');
+$routes->get('suppliers', 'Suppliers::index');
+$routes->post('suppliers/save', 'Suppliers::save');
+$routes->post('suppliers/getAll', 'Suppliers::getAll');
+   
+// ========== USERS (Keep Existing) ==========
+    $routes->get('/users', 'Users::index');
+    $routes->post('users/save', 'Users::save');
+    $routes->get('users/edit/(:segment)', 'Users::edit/$1');
+    $routes->post('users/update', 'Users::update');
+    $routes->delete('users/delete/(:num)', 'Users::delete/$1');
+    $routes->post('users/fetchRecords', 'Users::fetchRecords');
+

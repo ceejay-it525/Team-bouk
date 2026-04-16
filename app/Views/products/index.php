@@ -1,138 +1,195 @@
-<?php
+<?= $this->extend('theme/template') ?>
 
-namespace App\Controllers;
+<?= $this->section('content') ?>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><i class="fas fa-box"></i> Products</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 
-use App\Models\productsModel;
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">All Products</h3>
+              <button class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Add Product
+              </button>
+            </div>
+            <div class="card-body">
+              <table id="productsTable" class="table table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-class productss extends BaseController
-{
-    protected $productssModel;
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal">
+      <div class="modal-dialog">
+        <form id="addForm">
+          <?= csrf_field() ?>
+          <div class="modal-content">
+            <div class="modal-header bg-success">
+              <h5 class="modal-title text-white"><i class="fas fa-plus"></i> New Product</h5>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Product Name <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" required>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Category <span class="text-danger">*</span></label>
+                    <select name="category" class="form-control" required>
+                      <option value="">Select...</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Clothing">Clothing</option>
+                      <option value="Books">Books</option>
+                      <option value="Home">Home</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Stock <span class="text-danger">*</span></label>
+                    <input type="number" name="stock" min="0" class="form-control" required>
+                  </div>
+                </div>
+              </div>
 
-    public function __construct()
-    {
-        $this->productssModel = new productsModel();
-    }
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Price <span class="text-danger">*</span></label>
+                    <input type="number" name="price" step="0.01" min="0" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" class="form-control">
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-    public function datatables()
-    {
-        if ($this->request->isAJAX()) {
-            $request = $this->request;
-            $draw = intval($request->getPost('draw'));
-            $start = intval($request->getPost('start'));
-            $length = intval($request->getPost('length'));
-            $searchValue = $request->getPost('search')['value'] ?? '';
+              <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-success">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
-            // Total records without filtering
-            $total = $this->productssModel->countAll();
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal">
+      <div class="modal-dialog">
+        <form id="editForm">
+          <?= csrf_field() ?>
+          <div class="modal-content">
+            <div class="modal-header bg-warning">
+              <h5 class="modal-title text-white"><i class="fas fa-edit"></i> Edit Product</h5>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="id" id="editId">
+              
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="name" id="editName" class="form-control" required>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" id="editCategory" class="form-control" required>
+                      <option value="">Select...</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Clothing">Clothing</option>
+                      <option value="Books">Books</option>
+                      <option value="Home">Home</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" name="stock" id="editStock" min="0" class="form-control" required>
+                  </div>
+                </div>
+              </div>
 
-            // Filter records
-            $result = $this->productssModel->getFilteredData($searchValue, $start, $length);
-            $data = $result['data'];
-            $filteredTotal = $result['filtered'];
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" id="editPrice" step="0.01" min="0" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" id="editStatus" class="form-control">
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-            return $this->response->setJSON([
-                'draw' => $draw,
-                'recordsTotal' => $total,
-                'recordsFiltered' => $filteredTotal,
-                'data' => $data
-            ]);
-        }
-    }
+              <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" id="editDescription" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-warning">Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
 
-    public function index()
-    {
-        return view('productss/index');
-    }
+<?= $this->endSection() ?>
 
-    public function save()
-    {
-        if ($this->request->isAJAX()) {
-            $validation = \Config\Services::validation();
-            
-            $rules = [
-                'name' => 'required|min_length[3]',
-                'price' => 'required|numeric|greater_than[0]',
-                'stock' => 'required|integer|greater_than_equal_to[0]',
-                'category' => 'required|min_length[2]'
-            ];
-
-            if (!$validation->setRules($rules)->run($this->request->getPost())) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => $validation->getErrors()
-                ]);
-            }
-
-            $data = [
-                'name' => $this->request->getPost('name'),
-                'price' => floatval($this->request->getPost('price')),
-                'stock' => intval($this->request->getPost('stock')),
-                'category' => $this->request->getPost('category')
-            ];
-
-            $id = $this->request->getPost('id');
-            
-            if ($id) {
-                // Update existing products
-                $data['updated_at'] = date('Y-m-d H:i:s');
-                $result = $this->productssModel->update($id, $data);
-                $message = 'products updated successfully!';
-            } else {
-                // Create new products
-                $data['created_at'] = date('Y-m-d H:i:s');
-                $result = $this->productssModel->insert($data);
-                $message = 'products added successfully!';
-            }
-
-            if ($result) {
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => $message
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Failed to save products!'
-                ]);
-            }
-        }
-    }
-
-    public function delete()
-    {
-        if ($this->request->isAJAX()) {
-            $id = $this->request->getPost('id');
-            
-            if ($this->productssModel->delete($id)) {
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => 'products deleted successfully!'
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Failed to delete products!'
-                ]);
-            }
-        }
-    }
-
-    public function getproducts($id)
-    {
-        if ($this->request->isAJAX()) {
-            $products = $this->productssModel->find($id);
-            
-            if ($products) {
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'data' => $products
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'products not found!'
-                ]);
-            }
-        }
-    }
-}
+<?= $this->section('scripts') ?>
+<script> const baseUrl = "<?= base_url() ?>"; </script>
+<script src="<?= base_url('js/products/products.js') ?>"></script>
+<?= $this->endSection() ?>

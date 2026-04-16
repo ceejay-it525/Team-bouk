@@ -25,14 +25,14 @@ class Products extends BaseController
         }
 
         $request = $this->request;
-        $draw = intval($request->getPost('draw'));  // ✅ FIXED: $requestproducts → $request
+        $draw = intval($request->getPost('draw'));
         $start = intval($request->getPost('start'));
         $length = intval($request->getPost('length'));
         $searchValue = trim($request->getPost('search')['value'] ?? '');
 
         $totalRecords = $this->productsModel->countAll();
         $result = $this->productsModel->getFilteredData($searchValue, $start, $length);
-        
+
         return $this->response->setJSON([
             'draw' => $draw,
             'recordsTotal' => $totalRecords,
@@ -44,29 +44,33 @@ class Products extends BaseController
     public function save()
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'AJAX request only']);
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'AJAX request only'
+            ]);
         }
 
         $validation = \Config\Services::validation();
         $validation->setRules([
-            'name' => 'required|min_length[3]|max_length[255]',
+            'product' => 'required|min_length[3]|max_length[150]',
             'price' => 'required|numeric|greater_than[0]',
             'stock' => 'required|integer|greater_than_equal_to[0]',
-            'category' => 'required|min_length[2]|max_length[100]'
+            'category_id' => 'required|integer'
         ]);
 
         if (!$validation->run($this->request->getPost())) {
             return $this->response->setJSON([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => $validation->getErrors()
             ]);
         }
 
         $data = [
-            'name' => $this->request->getPost('name'),
+            'product' => $this->request->getPost('product'),
             'price' => floatval($this->request->getPost('price')),
             'stock' => intval($this->request->getPost('stock')),
-            'category' => $this->request->getPost('category')
+            'category_id' => intval($this->request->getPost('category_id')),
+            'status' => $this->request->getPost('status') ?? 'active'
         ];
 
         $id = $this->request->getPost('id');
@@ -97,10 +101,14 @@ class Products extends BaseController
     public function delete()
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'AJAX request only']);
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'AJAX request only'
+            ]);
         }
 
         $id = $this->request->getPost('id');
+
         if (!$id || !$this->productsModel->delete($id)) {
             return $this->response->setJSON([
                 'status' => 'error',
@@ -117,10 +125,14 @@ class Products extends BaseController
     public function getProduct($id = null)
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'AJAX request only']);
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'AJAX request only'
+            ]);
         }
 
         $product = $this->productsModel->find($id);
+
         if ($product) {
             return $this->response->setJSON([
                 'status' => 'success',
