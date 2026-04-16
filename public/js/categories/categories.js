@@ -1,7 +1,4 @@
 
-// =========================
-// TOAST
-// =========================
 function showToast(type, message) {
     if (type === 'success') {
         toastr.success(message, 'Success');
@@ -15,9 +12,7 @@ const categoryUrl = baseUrl + '/categories';
 let categoryTable;
 
 
-// =========================
-// ADD / UPDATE CATEGORY
-// =========================
+
 $('#categoryForm').on('submit', function (e) {
     e.preventDefault();
 
@@ -42,9 +37,7 @@ $('#categoryForm').on('submit', function (e) {
 });
 
 
-// =========================
-// EDIT CATEGORY
-// =========================
+
 $(document).on('click', '.edit-category', function () {
     const id = $(this).data('id');
 
@@ -65,9 +58,7 @@ $(document).on('click', '.edit-category', function () {
 });
 
 
-// =========================
-// DELETE CATEGORY
-// =========================
+
 $(document).on('click', '.delete-category', function () {
     const id = $(this).data('id');
 
@@ -89,10 +80,6 @@ $(document).on('click', '.delete-category', function () {
     });
 });
 
-
-// =========================
-// DATATABLE
-// =========================
 $(document).ready(function () {
 
     categoryTable = $('#categoriesTable').DataTable({

@@ -1,7 +1,4 @@
 
-// =========================
-// TOAST
-// =========================
 function showToast(type, message) {
     if (type === 'success') {
         toastr.success(message, 'Success');
@@ -15,9 +12,6 @@ const supplierUrl = baseUrl + '/suppliers';
 let supplierTable;
 
 
-// =========================
-// ADD / UPDATE SUPPLIER
-// =========================
 $('#supplierForm').on('submit', function (e) {
     e.preventDefault();
 
@@ -42,9 +36,6 @@ $('#supplierForm').on('submit', function (e) {
 });
 
 
-// =========================
-// EDIT SUPPLIER
-// =========================
 $(document).on('click', '.edit-supplier', function () {
     const id = $(this).data('id');
 
@@ -67,9 +58,6 @@ $(document).on('click', '.edit-supplier', function () {
 });
 
 
-// =========================
-// DELETE SUPPLIER
-// =========================
 $(document).on('click', '.delete-supplier', function () {
     const id = $(this).data('id');
 
@@ -92,9 +80,7 @@ $(document).on('click', '.delete-supplier', function () {
 });
 
 
-// =========================
-// DATATABLE
-// =========================
+
 $(document).ready(function () {
 
     supplierTable = $('#suppliersTable').DataTable({

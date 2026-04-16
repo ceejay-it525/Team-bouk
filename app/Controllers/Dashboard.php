@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\ProductModel;
+use App\Models\ProductsModel;
 use App\Models\SupplierModel;
 use App\Models\CategoryModel;
 
@@ -10,13 +10,18 @@ class Dashboard extends BaseController
 {
     public function index()
     {
-        $products = new ProductModel();
+        $products = new ProductsModel();
         $suppliers = new SupplierModel();
         $categories = new CategoryModel();
 
         $data = [
             'totalProducts'  => $products->countAll(),
-            'lowStock'       => $products->where('quantity <', 5)->countAllResults(),
+
+            // FIXED: stock instead of quantity
+            'lowStock'       => (new ProductsModel())
+                                ->where('stock <', 5)
+                                ->countAllResults(),
+
             'totalSuppliers' => $suppliers->countAll(),
             'totalCategories'=> $categories->countAll(),
         ];

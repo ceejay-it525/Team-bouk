@@ -1,7 +1,4 @@
 
-// =========================
-// TOAST
-// =========================
 function showToast(type, message) {
     if (type === 'success') {
         toastr.success(message, 'Success');
@@ -13,9 +10,7 @@ function showToast(type, message) {
 const productUrl = baseUrl + '/products';
 
 
-// =========================
-// ADD / UPDATE PRODUCT
-// =========================
+
 $('#addForm, #editForm').on('submit', function (e) {
     e.preventDefault();
 
@@ -44,9 +39,7 @@ $('#addForm, #editForm').on('submit', function (e) {
 });
 
 
-// =========================
-// EDIT PRODUCT
-// =========================
+
 $(document).on('click', '.edit-product', function () {
     const id = $(this).data('id');
 
@@ -73,9 +66,6 @@ $(document).on('click', '.edit-product', function () {
 });
 
 
-// =========================
-// DELETE PRODUCT
-// =========================
 $(document).on('click', '.delete-product', function () {
     const id = $(this).data('id');
 
@@ -98,9 +88,7 @@ $(document).on('click', '.delete-product', function () {
 });
 
 
-// =========================
-// DATATABLE
-// =========================
+
 let table;
 
 $(document).ready(function () {

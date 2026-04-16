@@ -14,97 +14,81 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-compact" 
+        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-compact"
             data-widget="treeview" role="menu" data-accordion="false">
 
-            <!-- Dashboard -->
+            <!-- DASHBOARD -->
             <li class="nav-item">
-                <a href="<?= base_url('dashboard') ?>" class="nav-link <?= (uri_string() == 'dashboard') ? 'active' : '' ?>">
+                <a href="<?= base_url('dashboard') ?>" 
+                   class="nav-link <?= (uri_string() == 'dashboard') ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>
-                        Dashboard
-                        <span class="right badge badge-info">Live</span>
-                    </p>
+                    <p>Dashboard</p>
                 </a>
             </li>
 
-            <!-- INVENTORY SECTION -->
-            <li class="nav-header text-warning">🛒 INVENTORY</li>
+            <!-- INVENTORY -->
+            <li class="nav-header">INVENTORY</li>
 
             <li class="nav-item">
-                <a href="<?= base_url('products') ?>" class="nav-link <?= (uri_string() == 'products') ? 'active' : '' ?>">
+                <a href="<?= base_url('products') ?>" 
+                   class="nav-link <?= (uri_string() == 'products') ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-box"></i>
-                    <p>Products <span class="right badge badge-success"><?= $totalProducts ?? '1.2K' ?></span></p>
+                    <p>Products</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('categories') ?>" class="nav-link <?= (uri_string() == 'categories') ? 'active' : '' ?>">
+                <a href="<?= base_url('categories') ?>" 
+                   class="nav-link <?= (uri_string() == 'categories') ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-tags"></i>
                     <p>Categories</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('suppliers') ?>" class="nav-link <?= (uri_string() == 'suppliers') ? 'active' : '' ?>">
+                <a href="<?= base_url('suppliers') ?>" 
+                   class="nav-link <?= (uri_string() == 'suppliers') ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-truck"></i>
                     <p>Suppliers</p>
                 </a>
             </li>
 
-            <!-- TRANSACTIONS SECTION -->
-            <li class="nav-header text-success">💰 TRANSACTIONS</li>
+            <!-- TRANSACTIONS -->
+            <li class="nav-header">TRANSACTIONS</li>
 
             <li class="nav-item">
-                <a href="<?= base_url('purchases') ?>" class="nav-link <?= (uri_string() == 'purchases') ? 'active' : '' ?>">
+                <a href="<?= base_url('purchases') ?>" class="nav-link">
                     <i class="nav-icon fas fa-arrow-down text-success"></i>
-                    <p>Purchases (Stock In)</p>
+                    <p>Purchases</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('sales') ?>" class="nav-link <?= (uri_string() == 'sales') ? 'active' : '' ?>">
+                <a href="<?= base_url('sales') ?>" class="nav-link">
                     <i class="nav-icon fas fa-arrow-up text-danger"></i>
-                    <p>Sales (Stock Out) <span class="right badge badge-danger">Hot</span></p>
+                    <p>Sales</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('inventory') ?>" class="nav-link <?= (uri_string() == 'inventory') ? 'active' : '' ?>">
+                <a href="<?= base_url('inventory') ?>" class="nav-link">
                     <i class="nav-icon fas fa-warehouse"></i>
-                    <p>Inventory Logs <span class="right badge badge-warning"><?= $lowStockCount ?? 7 ?></span></p>
+                    <p>Inventory Logs</p>
                 </a>
             </li>
 
-            <!-- REPORTS SECTION -->
-            <li class="nav-header text-primary">📊 REPORTS</li>
+            <!-- SYSTEM -->
+            <li class="nav-header">SYSTEM</li>
 
             <li class="nav-item">
-                <a href="<?= base_url('reports') ?>" class="nav-link">
-                    <i class="nav-icon fas fa-chart-bar"></i>
-                    <p>Reports & Analytics</p>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="<?= base_url('expenses') ?>" class="nav-link">
-                    <i class="nav-icon fas fa-coins"></i>
-                    <p>Expenses</p>
-                </a>
-            </li>
-
-            <!-- SYSTEM SECTION -->
-            <li class="nav-header text-muted">⚙️ SYSTEM</li>
-
-            <li class="nav-item">
-                <a href="<?= base_url('users') ?>" class="nav-link <?= (uri_string() == 'users') ? 'active' : '' ?>">
+                <a href="<?= base_url('users') ?>" class="nav-link">
                     <i class="nav-icon fas fa-user-shield"></i>
                     <p>Admin Accounts</p>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('log') ?>" class="nav-link <?= (uri_string() == 'log') ? 'active' : '' ?>">
+                <a href="<?= base_url('log') ?>" class="nav-link">
                     <i class="nav-icon fas fa-history"></i>
                     <p>Activity Logs</p>
                 </a>
@@ -122,16 +106,21 @@
     </nav>
 </div>
 
-<!-- Sidebar Mini Profile -->
+<!-- USER PANEL -->
 <div class="sidebar-custom-content">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="<?= base_url('assets/images/admin.jpg') ?>" class="img-circle elevation-2" alt="User Image">
+            <img src="<?= base_url('assets/images/admin.jpg') ?>" class="img-circle elevation-2">
         </div>
         <div class="info">
-            <a href="#" class="d-block"><?= session()->get('name') ?? 'Admin' ?></a>
-            <span class="badge badge-primary"><?= session()->get('role') ?? 'Super Admin' ?></span>
+            <a href="#" class="d-block">
+                <?= session()->get('name') ?? 'Admin' ?>
+            </a>
+            <span class="badge badge-primary">
+                <?= session()->get('role') ?? 'Super Admin' ?>
+            </span>
         </div>
     </div>
 </div>
+
 </aside>

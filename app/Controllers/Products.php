@@ -6,143 +6,60 @@ use App\Models\ProductsModel;
 
 class Products extends BaseController
 {
-    protected $productsModel;
-
-    public function __construct()
-    {
-        $this->productsModel = new ProductsModel();
-    }
-
     public function index()
     {
-        return view('Products/index');
+        $model = new ProductsModel();
+        $data['products'] = $model->findAll();
+
+        return view('products/index', $data);
     }
 
-    public function datatables()
+    public function create()
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setJSON(['error' => 'AJAX request only']);
-        }
-
-        $request = $this->request;
-        $draw = intval($request->getPost('draw'));
-        $start = intval($request->getPost('start'));
-        $length = intval($request->getPost('length'));
-        $searchValue = trim($request->getPost('search')['value'] ?? '');
-
-        $totalRecords = $this->productsModel->countAll();
-        $result = $this->productsModel->getFilteredData($searchValue, $start, $length);
-
-        return $this->response->setJSON([
-            'draw' => $draw,
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $result['filtered'],
-            'data' => $result['data']
-        ]);
+        return view('products/create');
     }
 
-    public function save()
+    public function store()
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'AJAX request only'
-            ]);
-        }
+        $model = new ProductsModel();
 
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'product' => 'required|min_length[3]|max_length[150]',
-            'price' => 'required|numeric|greater_than[0]',
-            'stock' => 'required|integer|greater_than_equal_to[0]',
-            'category_id' => 'required|integer'
+        $model->save([
+            'name'     => $this->request->getPost('name'),
+            'price'    => $this->request->getPost('price'),
+            'stock'    => $this->request->getPost('stock'),
+            'category' => $this->request->getPost('category'),
         ]);
 
-        if (!$validation->run($this->request->getPost())) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => $validation->getErrors()
-            ]);
-        }
-
-        $data = [
-            'product' => $this->request->getPost('product'),
-            'price' => floatval($this->request->getPost('price')),
-            'stock' => intval($this->request->getPost('stock')),
-            'category_id' => intval($this->request->getPost('category_id')),
-            'status' => $this->request->getPost('status') ?? 'active'
-        ];
-
-        $id = $this->request->getPost('id');
-
-        if ($id) {
-            $data['updated_at'] = date('Y-m-d H:i:s');
-            $success = $this->productsModel->update($id, $data);
-            $message = 'Product updated successfully!';
-        } else {
-            $data['created_at'] = date('Y-m-d H:i:s');
-            $success = $this->productsModel->insert($data);
-            $message = 'Product added successfully!';
-        }
-
-        if ($success) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => $message
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Failed to save product!'
-        ]);
+        return redirect()->to('/products');
     }
 
-    public function delete()
+    public function edit($id)
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'AJAX request only'
-            ]);
-        }
+        $model = new ProductsModel();
+        $data['product'] = $model->find($id);
 
-        $id = $this->request->getPost('id');
-
-        if (!$id || !$this->productsModel->delete($id)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Failed to delete product!'
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Product deleted successfully!'
-        ]);
+        return view('products/edit', $data);
     }
 
-    public function getProduct($id = null)
+    public function update($id)
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'AJAX request only'
-            ]);
-        }
+        $model = new ProductsModel();
 
-        $product = $this->productsModel->find($id);
-
-        if ($product) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'data' => $product
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Product not found!'
+        $model->update($id, [
+            'name'     => $this->request->getPost('name'),
+            'price'    => $this->request->getPost('price'),
+            'stock'    => $this->request->getPost('stock'),
+            'category' => $this->request->getPost('category'),
         ]);
+
+        return redirect()->to('/products');
+    }
+
+    public function delete($id)
+    {
+        $model = new ProductsModel();
+        $model->delete($id);
+
+        return redirect()->to('/products');
     }
 }

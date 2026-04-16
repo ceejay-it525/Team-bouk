@@ -3,173 +3,115 @@
 <head>
   <meta name="csrf-name" content="<?= csrf_token() ?>">
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BMIS | Dashboard</title>
+
+  <title>XIN-PAT STORE | Inventory System</title>
+
+  <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/jqvmap/jqvmap.min.css') ?>">
+
+  <!-- AdminLTE -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/adminlte.min.css') ?>">
+
+  <!-- Plugins -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/daterangepicker/daterangepicker.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/summernote/summernote-bs4.min.css') ?>">
+
   <!-- DataTables -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/toastr/toastr.min.css') ?>">
 
+  <!-- Toastr -->
+  <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/toastr/toastr.min.css') ?>">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-<!--   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="<?= base_url('assets/adminlte/dist/img/AdminLTELogo.png') ?>" alt="AdminLTELogo" height="60" width="60">
-  </div> -->
 
+  <!-- NAVBAR -->
   <?= $this->include('theme/navbar') ?>
 
+  <!-- SIDEBAR -->
   <?= $this->include('theme/sidebar') ?>
 
+  <!-- MAIN CONTENT -->
   <?= $this->renderSection('content') ?>
 
- <footer class="main-footer no-print">
-    <strong>Copyright &copy; 2025 <a href="#">Glenn IT Solutions</a> </strong>
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <strong>
+      Copyright &copy; 2026 <a href="#">XIN-PAT STORE</a>
+    </strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> CI4.v1
+      <b>Version</b> CI4 v1
     </div>
   </footer>
-<aside class="control-sidebar control-sidebar-dark">
-  <!-- Add padding so content isn’t stuck to edges -->
-  <div class="p-3">
-    <h5>Settings</h5>
-    <hr>
-    <div class="form-group">
-      <label>Option 1</label>
-      <input type="checkbox" class="form-control">
+
+  <!-- CONTROL SIDEBAR -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <div class="p-3">
+      <h5>Settings</h5>
+      <hr>
+      <div class="form-group">
+        <label>Option 1</label>
+        <input type="checkbox">
+      </div>
+      <div class="form-group">
+        <label>Option 2</label>
+        <input type="checkbox">
+      </div>
     </div>
-    <div class="form-group">
-      <label>Option 2</label>
-      <input type="checkbox" class="form-control">
-    </div>
-  </div>
-</aside>
+  </aside>
 
 </div>
+
+<!-- ================= SCRIPTS ================= -->
+
 <script src="<?= base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
 <script src="<?= base_url('assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/chart.js/Chart.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/sparklines/sparkline.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/jqvmap/jquery.vmap.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/jquery-knob/jquery.knob.min.js') ?>"></script>
+<script src="<?= base_url('assets/adminlte/dist/js/adminlte.min.js') ?>"></script>
+
+<!-- Plugins -->
 <script src="<?= base_url('assets/adminlte/plugins/moment/moment.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugins/daterangepicker/daterangepicker.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugins/summernote/summernote-bs4.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/dist/js/adminlte.js') ?>"></script>
 
-<script src="<?= base_url('assets/adminlte/dist/js/pages/dashboard.js') ?>"></script>
+<!-- DataTables -->
 <script src="<?= base_url('assets/adminlte/plugins/datatables/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') ?>"></script>
 <script src="<?= base_url('assets/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/jszip/jszip.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/pdfmake/pdfmake.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/pdfmake/vfs_fonts.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/datatables-buttons/js/buttons.print.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') ?>"></script>
+
+<!-- Toastr -->
 <script src="<?= base_url('assets/adminlte/plugins/toastr/toastr.min.js') ?>"></script>
+
 <?= $this->renderSection('scripts') ?>
-</body>
-</html>
+
+<!-- ================= THEME TOGGLE (FIXED + CLEAN) ================= -->
 <script>
-const themeToggle = document.getElementById('themeToggle');
-const navbar = document.getElementById('mainNavbar');
-const sidebar = document.getElementById('mainSidebar');
-const brandLink = document.getElementById('brandLink');
+const themeKey = 'xinpat_theme';
 
-// Apply saved theme on load
-let savedTheme = localStorage.getItem('adminlteTheme');
-if(savedTheme === 'dark'){
-    document.body.classList.add('dark-mode');
+const body = document.body;
 
-    // Navbar
-    navbar.classList.remove('navbar-warning');
-    navbar.classList.add('navbar-dark','bg-dark');
-
-    // Sidebar
-    sidebar.classList.remove('sidebar-light');
-    sidebar.classList.add('sidebar-dark-primary');
-
-    // Brand link
-    brandLink.classList.remove('bg-warning');
-    brandLink.classList.add('bg-dark');
-
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-} else {
-    // Light mode
-    navbar.classList.add('navbar-warning');
-
-    sidebar.classList.remove('sidebar-dark-primary');
-    sidebar.classList.add('sidebar-light');
-
-    brandLink.classList.remove('bg-dark');
-    brandLink.classList.add('bg-warning');
-
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+// load theme
+if (localStorage.getItem(themeKey) === 'dark') {
+  body.classList.add('dark-mode');
 }
 
-// Toggle theme
-themeToggle.addEventListener('click', function(e){
-    e.preventDefault();
-
-    if(document.body.classList.contains('dark-mode')){
-        // Switch to light
-        document.body.classList.remove('dark-mode');
-
-        // Navbar
-        navbar.classList.remove('navbar-dark','bg-dark');
-        navbar.classList.add('navbar-warning');
-
-        // Sidebar
-        sidebar.classList.remove('sidebar-dark-primary');
-        sidebar.classList.add('sidebar-light');
-
-        // Brand link
-        brandLink.classList.remove('bg-dark');
-        brandLink.classList.add('bg-warning');
-
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        localStorage.setItem('adminlteTheme','light');
-    } else {
-        // Switch to dark
-        document.body.classList.add('dark-mode');
-
-        // Navbar
-        navbar.classList.remove('navbar-warning');
-        navbar.classList.add('navbar-dark','bg-dark');
-
-        // Sidebar
-        sidebar.classList.remove('sidebar-light');
-        sidebar.classList.add('sidebar-dark-primary');
-
-        // Brand link
-        brandLink.classList.remove('bg-warning');
-        brandLink.classList.add('bg-dark');
-
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        localStorage.setItem('adminlteTheme','dark');
-    }
-});
+// toggle function (call from navbar button)
+function toggleTheme() {
+  body.classList.toggle('dark-mode');
+  localStorage.setItem(themeKey, body.classList.contains('dark-mode') ? 'dark' : 'light');
+}
 </script>
+
+</body>
+</html>
